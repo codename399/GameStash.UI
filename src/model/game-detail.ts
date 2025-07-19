@@ -3,7 +3,7 @@ import { Status } from "./enum/status.enum";
 import { Website } from "./enum/website.enum";
 
 export class GameDetail {
-    id!: number;
+    id!: string;
     name!: string;
     status!: Status;
     website!: Website;

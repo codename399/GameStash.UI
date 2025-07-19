@@ -27,3 +27,56 @@
     Submit
   </button>
 </form>
+
+<table mat-table [dataSource]="gameDetails()">
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef> Status </th>
+    <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="website">
+    <th mat-header-cell *matHeaderCellDef> Website </th>
+    <td mat-cell *matCellDef="let element"> {{element.website}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef> Action </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-raised-button color="primary" type="submit" (click)="start(element)"
+        [disabled]="element.status === 'Completed'">
+        Start
+      </button>
+      <button mat-raised-button color="primary" type="submit" (click)="archive(element)"
+        [disabled]="element.status !== 'Started'">
+        Archive
+      </button>
+      <button mat-raised-button color="primary" type="submit" (click)="complete(element)"
+        [disabled]="element.status !== 'Started'">
+        Complete
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<mat-paginator [length]="gameDetails().length" [pageSize]="10" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons>
+</mat-paginator>
+
+<button mat-raised-button color="primary" (click)="getRandom()">Get Random Game</button>
+<table *ngIf="gameDetail().id">
+  <tr>
+    <td>
+      <h3>Random Game Details</h3>
+      <p>Name: {{ gameDetail().name }}</p>
+      <p>Status: {{ gameDetail().status }}</p>
+      <p>Website: {{ gameDetail().website }}</p>
+    </td>
+  </tr>
+</table>
