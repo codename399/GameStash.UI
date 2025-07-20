@@ -86,6 +86,7 @@ export class GameDetailComponent implements OnInit {
     gameDetail.startDate = new Date().toISOString();
     this.gameDetailService.update(gameDetail).subscribe(() => {
       this.getAll();
+      this.gameDetail.set({} as GameDetail);
     });
   }
 
