@@ -108,7 +108,7 @@ export class GameDetailComponent implements OnInit {
 
   getRandom() {
     const pendingGames = this.gameDetails().filter(f => {
-      return f.status === Status.Added || f.status === Status.Archived;
+      return f.status === Status.Added;
     });
 
     this.gameDetail.set(pendingGames[Math.floor(Math.random() * pendingGames.length)]);
