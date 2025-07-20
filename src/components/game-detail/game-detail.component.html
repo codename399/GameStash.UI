@@ -16,19 +16,26 @@
     </mat-select>
   </mat-form-field>
 
-  <!-- <mat-form-field appearance="fill">
-    <mat-label>Start date</mat-label>
-    <input matInput [matDatepicker]="startDatePicker" formControlName="startDate">
-    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-    <mat-datepicker #startDatePicker startView="multi-year"></mat-datepicker>
-  </mat-form-field> -->
-
-  <button mat-raised-button color="primary" type="submit" [disabled]="gameDetailForm.invalid">
+  <button mat-raised-button color="primary" type="submit" (keyup.enter)="add()" [disabled]="gameDetailForm.invalid">
     Submit
   </button>
 </form>
 
-<table mat-table [dataSource]="gameDetails()">
+@for(status of statuses; track status) {
+<button mat-raised-button color="primary" (click)="filterByStatus(status)">
+  {{ status }}
+</button>
+}
+
+<br>
+
+@for(website of websites; track website) {
+<button mat-raised-button color="primary" (click)="filterByWebsite(website)">
+  {{ website }}
+</button>
+}
+
+<table mat-table [dataSource]="dataSource">
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef> Name </th>
     <td mat-cell *matCellDef="let element"> {{element.name}} </td>
@@ -48,8 +55,8 @@
     <th mat-header-cell *matHeaderCellDef> Action </th>
     <td mat-cell *matCellDef="let element">
       <button mat-raised-button color="primary" type="submit" (click)="start(element)"
-        [disabled]="element.status === 'Completed'">
-        Start
+        [disabled]="element.status !== 'Archived'">
+        Resume
       </button>
       <button mat-raised-button color="primary" type="submit" (click)="archive(element)"
         [disabled]="element.status !== 'Started'">
@@ -66,17 +73,23 @@
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
 
-<mat-paginator [length]="gameDetails().length" [pageSize]="10" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons>
+<button mat-raised-button color="primary" (click)="getAll()">Reset</button>
+
+<mat-paginator [length]="gameDetails().length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons>
 </mat-paginator>
 
 <button mat-raised-button color="primary" (click)="getRandom()">Get Random Game</button>
-<table *ngIf="gameDetail().id">
+<table *ngIf="gameDetail()?.id">
   <tr>
     <td>
       <h3>Random Game Details</h3>
       <p>Name: {{ gameDetail().name }}</p>
-      <p>Status: {{ gameDetail().status }}</p>
       <p>Website: {{ gameDetail().website }}</p>
+      <p>
+        <button mat-raised-button color="primary" type="submit" (click)="start(gameDetail())">
+          Start
+        </button>
+      </p>
     </td>
   </tr>
 </table>

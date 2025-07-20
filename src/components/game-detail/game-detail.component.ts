@@ -1,14 +1,14 @@
-import { AsyncPipe, CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Status } from '../../model/enum/status.enum';
 import { Website } from '../../model/enum/website.enum';
 import { GameDetail } from '../../model/game-detail';
@@ -33,14 +33,15 @@ import { GameDetailService } from '../../services/game-detail.service';
 })
 export class GameDetailComponent implements OnInit {
   gameDetailService = inject(GameDetailService);
-  changeDetectorRef = inject(ChangeDetectorRef);
-
+  dataSource = new MatTableDataSource<GameDetail>([]);
   gameDetails = signal<GameDetail[]>([]);
   gameDetail = signal<GameDetail>({} as GameDetail);
   statuses = Object.values(Status);
   websites = Object.values(Website);
   displayedColumns = ["name", "status", "website", "action"];
   gameDetailForm: FormGroup;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor() {
     this.gameDetailForm = new FormGroup({
@@ -58,10 +59,15 @@ export class GameDetailComponent implements OnInit {
     this.getAll();
   }
 
-  getAll() {
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
+  getAll(status?: Status, website?: Website) {
     this.gameDetailService.getAll().subscribe((gameDetails: GameDetail[]) => {
-      this.gameDetails.set(gameDetails);
-      this.changeDetectorRef.detectChanges();
+      this.gameDetails.set(status ? gameDetails.filter(f => f.status === status) : gameDetails);
+      this.gameDetails.set(website ? gameDetails.filter(f => f.website === website) : gameDetails);
+      this.dataSource.data = this.gameDetails();
     });
   }
 
@@ -70,7 +76,7 @@ export class GameDetailComponent implements OnInit {
       const newGameDetail: GameDetail = this.gameDetailForm.value;
       this.gameDetailService.add([newGameDetail]).subscribe(() => {
         this.getAll();
-        this.gameDetailForm.reset();
+        this.gameDetailForm.controls['name'].setValue('');
       });
     }
   }
@@ -105,5 +111,13 @@ export class GameDetailComponent implements OnInit {
     });
 
     this.gameDetail.set(pendingGames[Math.floor(Math.random() * pendingGames.length)]);
+  }
+
+  filterByStatus(status: Status) {
+    this.getAll(status);
+  }
+
+  filterByWebsite(website: Website) {
+    this.getAll(undefined, website);
   }
 }
