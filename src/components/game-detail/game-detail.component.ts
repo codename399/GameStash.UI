@@ -66,7 +66,7 @@ export class GameDetailComponent implements OnInit {
   getAll(status?: Status, website?: Website) {
     this.gameDetailService.getAll().subscribe((gameDetails: GameDetail[]) => {
       this.gameDetails.set(status ? gameDetails.filter(f => f.status === status) : gameDetails);
-      this.gameDetails.set(website ? gameDetails.filter(f => f.website === website) : gameDetails);
+      this.gameDetails.set(website ? this.gameDetails().filter(f => f.website === website) : this.gameDetails());
       this.dataSource.data = this.gameDetails();
     });
   }
