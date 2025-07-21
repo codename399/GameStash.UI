@@ -25,15 +25,6 @@
   >
     Submit
   </button>
-
-  <button
-    mat-raised-button
-    color="primary"
-    type="submit"
-    (click)="enableDelete = !enableDelete"
-  >
-    Toggle Delete
-  </button>
 </form>
 
 @for(status of statuses; track status) {
@@ -129,6 +120,14 @@
 </table>
 
 <button mat-raised-button color="primary" (click)="getAll()">Reset</button>
+<button
+  mat-raised-button
+  color="primary"
+  type="submit"
+  (click)="enableDelete = !enableDelete"
+>
+  Toggle Delete
+</button>
 
 <mat-paginator
   [length]="gameDetails().length"
