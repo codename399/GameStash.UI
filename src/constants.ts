@@ -4,4 +4,5 @@ export abstract class Constants {
     public static getByStatus = this.baseURL + "getByStatus";
     public static add = this.baseURL + "add";
     public static update = this.baseURL + "update";
+    public static delete = this.baseURL + "delete";
 }

@@ -40,6 +40,7 @@ export class GameDetailComponent implements OnInit {
   websites = Object.values(Website);
   displayedColumns = ["name", "status", "website", "action"];
   gameDetailForm: FormGroup;
+  enableDelete = false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -124,5 +125,11 @@ export class GameDetailComponent implements OnInit {
 
   searchByKeyword(keyword:string = ''){
     this.dataSource.filter = keyword.trim().toLowerCase();
+  }
+
+  delete(id:string) {
+    this.gameDetailService.delete(id).subscribe(() => {
+      this.getAll();
+    });
   }
 }

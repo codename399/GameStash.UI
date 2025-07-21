@@ -26,4 +26,8 @@ export class GameDetailService {
   update(gameDetail: GameDetail) {
     return this.httpClient.post(Constants.update, gameDetail);
   }
+
+  delete(id: string) {
+    return this.httpClient.delete(Constants.delete + '?id=' + id);
+  }
 }
