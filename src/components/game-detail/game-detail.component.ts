@@ -121,4 +121,8 @@ export class GameDetailComponent implements OnInit {
   filterByWebsite(website: Website) {
     this.getAll(undefined, website);
   }
+
+  searchByKeyword(keyword:string = ''){
+    this.dataSource.filter = keyword.trim().toLowerCase();
+  }
 }

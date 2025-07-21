@@ -35,6 +35,13 @@
 </button>
 }
 
+<br>
+
+<mat-form-field appearance="fill">
+  <mat-label>Search by Keyword:</mat-label>
+  <input matInput (keyup)="searchByKeyword($event.target.value)" />
+</mat-form-field>
+
 <table mat-table [dataSource]="dataSource">
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef> Name </th>
