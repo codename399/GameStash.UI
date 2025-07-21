@@ -3,5 +3,6 @@ export enum Website {
     EpicGames = "EpicGames",
     EA = "EA",
     GOG = "GOG",
-    Koyso = "Koyso"
+    Koyso = "Koyso",
+    XBox = "XBox"
 }
