@@ -72,7 +72,7 @@
         color="primary"
         type="submit"
         (click)="start(element)"
-        [disabled]="element.status !== 'Added'"
+        [disabled]="element.status !== 'Added' || !enableStart"
       >
         Start
       </button>
@@ -120,6 +120,14 @@
 </table>
 
 <button mat-raised-button color="primary" (click)="getAll()">Reset</button>
+<button
+  mat-raised-button
+  color="primary"
+  type="submit"
+  (click)="enableStart = !enableStart"
+>
+  Toggle Start
+</button>
 <button
   mat-raised-button
   color="primary"

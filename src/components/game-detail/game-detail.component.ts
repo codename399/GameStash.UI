@@ -41,6 +41,7 @@ export class GameDetailComponent implements OnInit {
   displayedColumns = ["name", "status", "website", "action"];
   gameDetailForm: FormGroup;
   enableDelete = false;
+  enableStart = false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
